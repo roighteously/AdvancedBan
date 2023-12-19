@@ -1,4 +1,4 @@
-name: AdvancedBan
+name: GamepixelBansBukkit
 version: ${project.version}
 main: ${project.groupId}.bukkit.BukkitMain
 author: Leoko

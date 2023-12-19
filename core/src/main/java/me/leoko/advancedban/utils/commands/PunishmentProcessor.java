@@ -9,6 +9,9 @@ import me.leoko.advancedban.utils.Command;
 import me.leoko.advancedban.utils.Permissionable;
 import me.leoko.advancedban.utils.Punishment;
 import me.leoko.advancedban.utils.PunishmentType;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -72,8 +75,13 @@ public class PunishmentProcessor implements Consumer<Command.CommandInput> {
         String operator = mi.getName(input.getSender());
         Punishment.create(name, target, reason, operator, type, end, timeTemplate, silent);
 
+        LuckPerms lp = LuckPermsProvider.get();
+        User usr = lp.getUserManager().getUser(name);
+        assert usr != null;
+        usr.getCachedData().getMetaData().getPrefix();
+
         MessageManager.sendMessage(input.getSender(), type.getBasic().getName() + ".Done",
-                true, "NAME", name);
+                true, "NAME", usr.getCachedData().getMetaData().getPrefix() + name);
     }
 
     // Removes time argument and returns timestamp (null if failed)
